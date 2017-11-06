@@ -2,19 +2,44 @@
 #define IMAGECOMPRESSION_H
 
 /**
- * @brief findLimitValueInArr   计算每张图片的长度,最大值,最小值
- * @param pImageHeight          图像原始数据存放的内存地址
- * @param imgLength             每张图像长度存放的地址
- * @param totalDataLen          前N张图像的长度总和
- * @param imageCount            图像总数量
+ * @brief mappingImageToArray   将图像信息映射到待压缩数组
+ * @param pImageHeight          图像原始数据
+ * @param imageInfo             每张待压缩图片在内存地址中的索引和长度信息
+ * @param pMappingData          映射后的图片信息存放地址
+ * @return                      返回映射后待压缩数据长度
  */
-void findLimitValueInArr(unsigned char* pImageHeight,
-                         int imgLength[],
-                         int totalDataLen[],
-                         int imageCount);
+int mappingImageToArray(float* pImageHeight,
+                        int imageInfo[],
+                        unsigned char* pMappingData);
 
+/**
+ * @brief exportByteDataToFile  将传入的数据导出为文件
+ * @param outputName            数据导出的文件名
+ * @param pMappingData          待导出的数据头指针
+ * @param arrayLength           待导出的数据长度
+ */
+void exportByteDataToFile( char outpurName[],
+                           unsigned char* pMappingData,
+                           int arrayLength);
 
+void exportFloatDataToFile( char outpurName[],
+                            float* pDiffData,
+                            int arrayLength);
+void importDataFromFile();
 
+/**
+ * @brief compressImage         压缩图像信息到文件
+ * @param pPictureData          所有图片的高度信息
+ * @param pMappingData          存放每张图片压缩后的信息
+ * @param perPicLenArr          存放每张图片长度的数组
+ * @param imageCount            图片数量
+ */
+void compressImage(float *pImageHeight,
+                   unsigned char *pMappingData,
+                   int perPicLenArr[],
+                   int imageCount);
+
+void decompressImage();
 
 
 #endif // IMAGECOMPRESSION_H

@@ -21,8 +21,8 @@ void generateLengthData( int imgLength[],
  * @param maxValue           图像高度的最大值
  */
 void generateHeightData( float* pImageHeight,
-                         int imageLength,
-                         float minValue,
-                         float maxValue );
+                         int    imageLength,
+                         float  minValue,
+                         float  maxValue );
 
 #endif // DATAGENERATION_H
