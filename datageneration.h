@@ -12,6 +12,7 @@
  * @param imageCount         所有图像的张数
  * @param minValue           图像长度的最小值
  * @param maxValue           图像长度的最大值
+ * @return                   N/A
  */
 void generateLengthData( int imgLength[],
                          int imageCount,
@@ -24,6 +25,7 @@ void generateLengthData( int imgLength[],
  * @param imgLength          所有图像的总长度
  * @param minValue           图像高度的最小值
  * @param maxValue           图像高度的最大值
+ * @return                   N/A
  */
 void generateHeightData( float* pImageHeight,
                          int    imageLength,
