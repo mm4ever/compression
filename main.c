@@ -2,27 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <dirent.h>
 
 #include "datageneration.h"
 #include "imagecompression.h"
 
 
-#define IMAGE_COUNT 1000                    // 生成图片数据数组的个数
-#define MIN_IMG_LEN 2048                    // 单张图片的最小长度
-#define MAX_IMG_LEN 5000                    // 单张图片的最大长度
-#define MIN_IMG_HIGHT 0.00                  // 图片的最小高度
-#define MAX_IMG_HIGHT 5000.00               // 图片的最大高度
-#define MAX_COMPRESS_LEN 10000              // 待压缩数组最大长度
-#define HEADER_LENGTH 6                     // 每张图片的表头长度
+#define IMAGE_COUNT 1000                        // 生成图片数据数组的个数
+#define MIN_IMG_LEN 2048                        // 单张图片的最小长度
+#define MAX_IMG_LEN 5000                        // 单张图片的最大长度
+#define MIN_IMG_HIGHT 0.00                      // 图片的最小高度
+#define MAX_IMG_HIGHT 5000.00                   // 图片的最大高度
+#define MAX_COMPRESS_LEN 10000                  // 待压缩数组最大长度
 
 
 int main()
 {
-    mkdir("./data",0777);
-    mkdir("./diff",0777);
+    clock_t start,finish;
+    double runTime;
+    start = clock();
 
     //>>>----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //peter 171101 生成数据
@@ -35,7 +32,7 @@ int main()
     pImageHeight = malloc(imgLength[IMAGE_COUNT] * sizeof(float));
     if ( NULL == pImageHeight )
     {
-        printf("开辟内存失败!\n");
+        printf("malloc error!\n");
         return 1;
     }
     // 随机生成每张图片的高度信息
@@ -52,7 +49,7 @@ int main()
     pMappingData = malloc(MAX_COMPRESS_LEN*sizeof(unsigned char));
     if ( NULL == pMappingData )
     {
-        printf("开辟内存失败!\n");
+        printf("malloc error!\n");
         return 1;
     }
     compressImage(pImageHeight,pMappingData,imgLength,IMAGE_COUNT);
@@ -61,39 +58,29 @@ int main()
 
 
     //>>>----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //peter 171103 解压图片
-    float* pDiffData;                           // 映射前后的数据差值存放地址
+    //peter 171106 解压图片
+    float* pDecompressData;                     // 解压后的高度信息存放地址
 
     // 存放映射前后高度数据差值的内存空间
-    pDiffData = malloc(imgLength[IMAGE_COUNT] * sizeof(float));
-    if ( NULL == pDiffData )
+    pDecompressData = malloc(imgLength[IMAGE_COUNT] * sizeof(float));
+    if ( NULL == pDecompressData )
     {
-        printf("开辟内存失败!\n");
+        printf("malloc error!\n");
         return 1;
     }
+    decompressImage(pImageHeight,pDecompressData,imgLength,IMAGE_COUNT);
     //<<<----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//    int index=0;
-//    char fileName[FILENAME_MAX];
-//    for( int i = 0; i < IMAGE_COUNT; ++i )
-//    {
-//        sprintf(fileName,"./data/chip_%03d.txt",i);
-//        FILE *file = fopen( fileName, "w");
-//        for( int j = 0; j < imgLength[i]; ++j )
-//        {
-//                fprintf(file,"%.2f\n",*(pImageHeight+index+j));
-//        }
-//        fclose(file);
-//        index += imgLength[i];
-//    }
-
-
     free(pImageHeight);
-    free(pDiffData);
+    free(pDecompressData);
     free(pMappingData);
     pImageHeight = NULL;
-    pDiffData = NULL;
+    pDecompressData = NULL;
     pMappingData = NULL;
+
+    finish = clock();
+    runTime = (double)(finish-start) / CLOCKS_PER_SEC;
+    printf("%lf\n",runTime);
 
     return 0;
 }

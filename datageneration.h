@@ -1,6 +1,11 @@
 #ifndef DATAGENERATION_H
 #define DATAGENERATION_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+
 /**
  * @brief generateLengthData 指定图片数并随机生成每张图片的长度
  * @param imgLength[]        存放所有图像长度的内存地址
